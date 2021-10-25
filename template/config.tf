@@ -16,3 +16,7 @@ resource "aws_instance" "newserv" {
   ami = "ami-0f7cd40eac2214b37"
   instance_type = "t2.micro"
 }
+resource "aws_instance" "newserv" {
+  ami = "ami-0f7cd40eac2214b37"
+  instance_type = "t2.micro"
+}
