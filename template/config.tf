@@ -12,11 +12,11 @@ provider "aws" {
   shared_credentials_file = "/root/.aws/credentials"
 }
 
-resource "aws_instance" "newserv" {
+resource "aws_instance" "z1" {
   ami = "ami-0f7cd40eac2214b37"
   instance_type = "t2.micro"
 }
-resource "aws_instance" "newserv" {
+resource "aws_instance" "z2" {
   ami = "ami-0f7cd40eac2214b37"
   instance_type = "t2.micro"
 }
