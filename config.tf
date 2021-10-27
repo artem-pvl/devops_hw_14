@@ -105,9 +105,12 @@ resource "aws_instance" "build" {
 }
 
 provider "docker" {
-  host = "tcp://${aws_instance.build.public_ip}:1234/"
+  host = "tcp://${aws_instance.build.public_ip}:2376/"
 }
 
+resource "docker_image" "ubuntu" {
+  name = "ubuntu:latest"
+}
 # resource "docker_image" "zoo" {
 #   name = "zoo"
 #   build {
