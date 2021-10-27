@@ -66,6 +66,7 @@ resource "aws_instance" "web" {
   ami                    = "ami-0f7cd40eac2214b37"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.allow_all.id]
+  key_name               = aws_key_pair.aws_key_t.key_name
 
   tags = {
     Name = "web"
@@ -76,7 +77,7 @@ resource "aws_instance" "build" {
   ami                    = "ami-0f7cd40eac2214b37"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.allow_all.id]
-  key_name      = aws_key_pair.aws_key_t.key_name
+  key_name               = aws_key_pair.aws_key_t.key_name
 
   tags = {
     Name = "build"
