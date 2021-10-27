@@ -12,6 +12,10 @@ terraform {
       source = "hashicorp/local"
       version = "2.1.0"
     }
+    docker = {
+      source = "kreuzwerker/docker"
+      version = "2.15.0"
+    }
   }
 }
 
@@ -67,9 +71,17 @@ resource "aws_instance" "web" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.allow_all.id]
   key_name               = aws_key_pair.aws_key_t.key_name
+  associate_public_ip_address = true
 
   tags = {
     Name = "web"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "apt update",
+      "apt install -y docker.io",
+    ]
   }
 }
 
@@ -78,24 +90,34 @@ resource "aws_instance" "build" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.allow_all.id]
   key_name               = aws_key_pair.aws_key_t.key_name
+  associate_public_ip_address = true
 
   tags = {
     Name = "build"
   }
+
+  provisioner "remote-exec" {
+    inline = [
+      "apt update",
+      "apt install -y docker.io",
+    ]
+  }
 }
 
-# module "key-pair" {
-#   source  = "cloudposse/key-pair/aws"
-#   version = "0.18.2"
-#   # insert the 14 required variables here
-#   generate_ssh_key = "true"
-#   name = "awskey"
-#   ssh_public_key_path = "/root/.ssh/"
-#   environment = "eu-west-3"
-# }
+provider "docker" {
+  host = "tcp://${aws_instance.build.public_ip}:1234/"
+}
 
-# resource "local_file" "rsa_key" {
-#     content = "private_key"
-#     filename = "/root/.ssh/rsa_key"
+# resource "docker_image" "zoo" {
+#   name = "zoo"
+#   build {
+#     path = "."
+#     tag  = ["zoo:develop"]
+#     build_arg = {
+#       foo : "zoo"
+#     }
+#     label = {
+#       author : "zoo"
+#     }
+#   }
 # }
-
