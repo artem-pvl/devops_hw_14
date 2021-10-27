@@ -40,7 +40,7 @@ resource "aws_key_pair" "aws_key_t" {
 resource "aws_security_group" "allow_all" {
   name        = "allow_all"
   description = "Allow all"
-  vpc_id      = aws_all.main.id
+  # vpc_id      = aws_all.main.id
 
   ingress = [
     {
