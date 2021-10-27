@@ -40,14 +40,16 @@ resource "aws_key_pair" "aws_key_t" {
 resource "aws_security_group" "allow_all" {
   name        = "allow_all"
   description = "Allow all"
-  # vpc_id      = aws_all.main.id
+  vpc_id      = aws_vpc.main.id
 
   ingress = [
     {
-      description      = "all"
-      from_port        = 0
-      to_port          = 65535
+      description      = "TLS from VPC"
+      from_port        = 443
+      to_port          = 443
       protocol         = "tcp"
+      cidr_blocks      = [aws_vpc.main.cidr_block]
+      ipv6_cidr_blocks = [aws_vpc.main.ipv6_cidr_block]
     }
   ]
 
